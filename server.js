@@ -16,6 +16,10 @@ import Anthropic from "@anthropic-ai/sdk";
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3000;
 
+/** Pages and asset folders not ready for the public. They return 404 unless SHOW_WIP_PAGES=true. */
+const WIP_PAGES = ["resources.html"];
+const WIP_ASSET_DIRS = ["/assets/forms"];
+
 const MODEL = "claude-opus-5-5";
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // Claude's per-image limit (decoded)
@@ -167,14 +171,22 @@ export function createApp({ analyze = analyzeImage } = {}) {
   app.use("/api", (req, res) => res.status(404).json({ error: "Not found." }));
 
   /* Static site: only the public folders and top-level .html pages.
-     Never serve the project root, which holds .env, server.js and node_modules. */
+     Never serve the project root, which holds .env, server.js and node_modules.
+     Work-in-progress pages and assets stay hidden unless SHOW_WIP_PAGES=true (for local previews). */
+  const showWip = process.env.SHOW_WIP_PAGES === "true";
+  const hiddenPages = showWip ? [] : WIP_PAGES;
+  if (!showWip) {
+    for (const dir of WIP_ASSET_DIRS) {
+      app.use(dir, (req, res) => res.status(404).send("Page not found"));
+    }
+  }
   for (const dir of ["css", "js", "assets"]) {
     app.use(`/${dir}`, express.static(path.join(ROOT, dir), { index: false }));
   }
   app.get("/", (req, res) => res.sendFile(path.join(ROOT, "index.html")));
   app.use((req, res, next) => {
     const match = /^\/([a-z0-9-]+\.html)$/.exec(req.path);
-    if (req.method === "GET" && match && fs.existsSync(path.join(ROOT, match[1]))) {
+    if (req.method === "GET" && match && !hiddenPages.includes(match[1]) && fs.existsSync(path.join(ROOT, match[1]))) {
       return res.sendFile(path.join(ROOT, match[1]));
     }
     next();

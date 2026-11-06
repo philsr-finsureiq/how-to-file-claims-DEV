@@ -91,7 +91,8 @@ how-to-file-claims/
 ├── index.html        # Landing page: choose a claim type, basic steps
 ├── auto.html         # Auto insurance claim guide (PIP / no-fault)
 ├── home.html         # Home & property claim guide (hurricane, water, etc.)
-├── resources.html    # Filterable table of Florida help resources
+├── liability.html    # Liability claim guide (homeowners/renters liability)
+├── resources.html    # Filterable table of Florida help resources (WIP: hidden, see WIP_PAGES in server.js)
 ├── claim-contacts.html # Claims phone and email by insurance company
 ├── inventory.html    # Home inventory: photo upload + AI analysis
 ├── css/
