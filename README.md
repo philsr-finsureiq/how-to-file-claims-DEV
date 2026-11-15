@@ -94,7 +94,7 @@ how-to-file-claims/
 ├── liability.html    # Liability claim guide (homeowners/renters liability)
 ├── resources.html    # Filterable table of Florida help resources (WIP: hidden, see WIP_PAGES in server.js)
 ├── claim-contacts.html # Claims phone and email by insurance company
-├── inventory.html    # Home inventory: photo upload + AI analysis
+├── inventory.html    # Home inventory: photo upload + AI analysis (WIP: hidden, see WIP_PAGES in server.js)
 ├── css/
 │   └── styles.css    # All site styles (tokens → base → layout → components)
 ├── js/

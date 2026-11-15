@@ -17,7 +17,7 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3000;
 
 /** Pages and asset folders not ready for the public. They return 404 unless SHOW_WIP_PAGES=true. */
-const WIP_PAGES = ["resources.html"];
+const WIP_PAGES = ["resources.html", "inventory.html"];
 const WIP_ASSET_DIRS = ["/assets/forms"];
 
 const MODEL = "claude-opus-5-5";
